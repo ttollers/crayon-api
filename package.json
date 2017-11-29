@@ -1,0 +1,24 @@
+{
+  "name": "crayon-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ttollers/crayon-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ttollers/crayon-api/issues"
+  },
+  "homepage": "https://github.com/ttollers/crayon-api#readme",
+  "dependencies": {
+    "koa": "^2.4.1",
+    "koa-body": "^2.5.0",
+    "koa-router": "^7.3.0"
+  }
+}
