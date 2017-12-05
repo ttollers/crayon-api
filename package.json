@@ -2,8 +2,9 @@
   "name": "crayon-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server",
   "scripts": {
+    "start": "node ./src/server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
