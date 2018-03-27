@@ -3,35 +3,38 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"io/ioutil"
-	"os"
 	"github.com/julienschmidt/httprouter"
 	"log"
+	"github.com/ttollers/crayon-api/db"
 )
 
 
 func handler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	BOOK_PATH := os.Getenv("CHAPTER_DIR");
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
+	fromLang := ps.ByName("fromLang")
+	toLang := ps.ByName("toLang")
 	bookName := ps.ByName("bookName")
-	nativeLang := ps.ByName("nativeLang")
 	chapter := ps.ByName("chapter")
-	fileName := ps.ByName("type") + ".json"
 
-	filePath := BOOK_PATH + "/" +  bookName + "/" + nativeLang + "/" + chapter + "/" + fileName
+	objectPath := "books/" +  fromLang + "/" + toLang + "/" + bookName + "/" + chapter 
 
-	data, err := ioutil.ReadFile(filePath)
-	if err != nil {
-		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
+	err, data := db.GetObject(objectPath)
+
+
+	if err != nil {		
+		log.Print(err)
+		http.Error(w, err.Error(), http.StatusNotFound)
+		return
+	} else {
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprintf(w, data)
 	}
-	w.Header().Set("Content-Type", "application/json")
-
-	fmt.Fprintf(w, string(data))
 }
 
 func main(){
 	router := httprouter.New()
-	router.GET("/book/:bookName/:nativeLang/:chapter/:type", handler)
+	router.GET("/book/:fromLang/:toLang/:bookName/:chapter", handler)
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
 
